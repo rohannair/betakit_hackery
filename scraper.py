@@ -1,5 +1,8 @@
-import tweepy
+import csv
 import os
+import time
+import tweepy
+
 from os.path import join, dirname
 from pprint import pprint
 from dotenv import load_dotenv
@@ -18,7 +21,23 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
-# public_tweets = api.home_timeline()
-for tweet in tweepy.Cursor(api.search, q="@ddebow").items(1):
-  if (tweet.in_reply_to_status_id_str == "826164031455162368"):
-    pprint("http://twitter.com/%s/status/%s" % tweet.user.screen_name, tweet.id)
+tweepy_cursor = tweepy.Cursor(api.search, q="@ddebow").items():
+def grab_tweets:
+  while True:
+    try:
+      for tweet in tweepy_cursor
+        if (tweet.in_reply_to_status_id_str == "826164031455162368"):
+          last_tweet = tweet.id
+          tweet_url = "http://twitter.com/%s/status/%s" % tweet.user.screen_name, tweet.id
+
+          f = open('file.csv', 'wb')
+          w = csv.writer(f)
+          w.writeRows(tweet_url)
+          f.close()
+
+      time.sleep(60 * 30)
+
+    except StopIteration:
+      break
+
+
